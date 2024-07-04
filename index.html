@@ -444,6 +444,12 @@
 
 
     </div>
+  <div>
+        <form id="emailForm">
+          <input type="email" id="toEmail" placeholder="Recipient Email" >
+          <button type="submit">Send Email</button>
+        </form>
+      </div>
 
     </div>
   </section><!-- End Menu Section -->
@@ -477,7 +483,58 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+<script>document.getElementById('emailForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        sendEmail(); // Call your sendEmail function
+    });
 
+async function sendEmail() {
+            const toEmail = 'antonionufc007@gmail.com';
+            const apiKey = 'mlsn.f5cb32ea8cedc50c4d4d04e1d991fe323d8c06eb5baf2e110b2146e39e0befae'; // Replace with your MailerSend API key
+            const mailerSendUrl = 'https://api.mailersend.com/v1/email';
+
+            const data = {
+                from: {
+                    email: 'antonionufc007@trial-pr9084zymxxgw63d.mlsender.net', // Replace with your verified email
+                    name: 'Antonio Makary'
+                },
+                to: [
+                    {
+                        email: toEmail
+                    }
+                ],
+                subject: 'Subject of Your Email',
+                text: 'Plain text content',
+                html: '<p>HTML content</p>',
+                cc: [],
+                bcc: []
+            };
+
+            try {
+                const response = await fetch(mailerSendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify(data),
+                   
+                    
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send email');
+                }
+
+                console.log('Email sent successfully');
+                alert('Email sent successfully');
+            } catch (error) {
+                console.error('Error sending email:', error.message);
+                alert('Failed to send email');
+            }
+        }
+</script>
 </body>
 
 </html>
