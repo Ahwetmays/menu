@@ -501,13 +501,61 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-<script>document.getElementById('emailForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        
-        sendEmail(); // Call your sendEmail function
+ <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+
+      document.body.addEventListener('click', (event) => {
+        if (event.target.classList.contains('add-btn') || event.target.classList.contains('remove-btn')) {
+          const menuContent = event.target.closest('.menu-content');
+          const itemName = menuContent.textContent.trim().split(' ')[0]; // Gets the name of the item
+          const quantitySpan = menuContent.querySelector('.quantity');
+
+          if (!quantitySpan) return; // Exit if quantitySpan is not found
+
+          let quantity = sessionStorage.getItem(itemName) ? parseInt(sessionStorage.getItem(itemName)) : 0;
+
+          if (event.target.classList.contains('add-btn')) {
+            quantity++;
+          } else if (event.target.classList.contains('remove-btn') && quantity > 0) {
+            quantity--;
+            if (quantity === 0) {
+              sessionStorage.removeItem(itemName);
+            }
+          }
+
+          if (quantity > 0) {
+            sessionStorage.setItem(itemName, quantity);
+          } else {
+            sessionStorage.removeItem(itemName);
+          }
+
+          quantitySpan.textContent = quantity;
+        }
+      });
+
+      // Initialize all quantities from sessionStorage on page load
+      document.querySelectorAll('.menu-content').forEach(menuContent => {
+        const itemName = menuContent.textContent.trim().split(' ')[0];
+        const quantitySpan = menuContent.querySelector('.quantity');
+
+        if (!quantitySpan) return; // Exit if quantitySpan is not found
+
+        let quantity = sessionStorage.getItem(itemName) ? parseInt(sessionStorage.getItem(itemName)) : 0;
+        quantitySpan.textContent = quantity;
+      });
     });
 
- async function sendData() {
+
+
+    document.getElementById('orderForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      sendData(); // Call your sendEmail function
+    });
+
+    async function sendData() {
 
       const order = [];
 
@@ -547,8 +595,7 @@
 
     }
 
-        }
-</script>
+  </script>
 </body>
 
 </html>
