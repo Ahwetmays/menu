@@ -66,57 +66,75 @@
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Tiramisu<span>3.75 $</span>
+            Tiramisu <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>3.75 $</span>
           </div>
         </div>
         
         
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Cheese Cake<span>4.00 $</span>
+            Cheese Cake <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>4.00 $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Fondant<span>3.25 $</span>
+            Fondant <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>3.25 $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-           Chocolate Fudge <span>4.00 $</span>
+           Chocolate Fudge <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>4.00 $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Crème Brulee <span>- $</span>
+            Crème Brulee <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>- $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Layali Lebnen <span>- $</span>
+            Layali Lebnen <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>- $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Brownies <span>2.75 $</span>
+            Brownies <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>2.75 $</span>
           </div>
         </div>
 
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Biscuit au Chocolat <span>- $</span>
+            Biscuit au Chocolat <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>- $</span>
           </div>
         </div>
 
         <div class="col-lg-6 menu-item filter-dessert">
           <div class="menu-content">
-            Ice Cream <span>4.00 $</span>
+            Ice Cream <span class="add-btn">+</span>
+            <span class="quantity">0</span>
+            <span class="remove-btn">-</span> <span>4.00 $</span>
           </div>
         </div>
 
@@ -489,18 +507,32 @@
         sendEmail(); // Call your sendEmail function
     });
 
-async function sendEmail() {
-           
-               
-            
-                 const orderr = ["Pizza", "Burger", "Fries"];
+ async function sendData() {
+
+      const order = [];
+
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        const quantity = parseInt(sessionStorage.getItem(key));
+
+
+
+        if (quantity > 0) {
+          order.push({
+            item: key,
+            quantity: quantity
+          });
+        }
+      }
+
+      console.log(order)
       try {
         const response = await fetch('https://tryingyaman.ddns.net/api/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({orderr})
+          body: JSON.stringify({ order })
         });
 
         if (!response.ok) {
@@ -512,7 +544,9 @@ async function sendEmail() {
       } catch (error) {
         console.error('Error:', error);
       }
-            
+
+    }
+
         }
 </script>
 </body>
